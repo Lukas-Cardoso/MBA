@@ -3,21 +3,44 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <title>Materiais de apoio</title>
-<style>body{background:#0f1115;color:#eee;font-family:-apple-system,Helvetica,Arial,sans-serif;margin:0;}
-.wrap{max-width:760px;margin:0 auto;padding:24px 18px 60px;}
-h1{font-size:1.35rem;margin-bottom:18px;}
-.nav-back{display:inline-block;margin-bottom:16px;color:#7dd3fc;text-decoration:none;font-size:0.9rem;}
-.item{display:flex;justify-content:space-between;align-items:center;background:#1a1d24;border-radius:10px;padding:13px 18px;margin-bottom:9px;text-decoration:none;color:#eee;border:1px solid #2a2d35;}
-.item:hover{border-color:#7dd3fc;}
-.item .tag{font-size:0.72rem;color:#9aa0a6;border:1px solid #3a3d45;border-radius:5px;padding:1px 7px;margin-left:10px;flex-shrink:0;}
+<style>
+:root{
+  --bg:#0a0f1c; --surface:#11192c; --surface-hi:#172240; --border:#22304f;
+  --gold:#cda05b; --gold-soft:#cda05b22; --text:#e9ecf3; --muted:#8d97ad;
+  --font-display:'Source Serif 4',Georgia,serif;
+  --font-body:'Inter',-apple-system,Helvetica,Arial,sans-serif;
+  --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+
+*{box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);margin:0;}
+.wrap{max-width:780px;margin:0 auto;padding:28px 20px 70px;}
+.crumb{font-family:var(--font-mono);font-size:0.78rem;color:var(--muted);text-decoration:none;letter-spacing:0.03em;}
+.crumb:hover{color:var(--gold);}
+h1{font-family:var(--font-display);font-weight:600;font-size:1.5rem;margin:14px 0 4px;letter-spacing:0.01em;}
+.subtitle{color:var(--muted);font-size:0.85rem;margin-bottom:22px;font-family:var(--font-mono);}
+.rule{height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:18px;}
+.list{display:flex;flex-direction:column;gap:8px;}
+.row{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:13px 16px;text-decoration:none;color:var(--text);transition:border-color .15s,background .15s;}
+.row:hover{border-color:var(--gold);background:var(--surface-hi);}
+.code{font-family:var(--font-mono);font-size:0.72rem;color:var(--gold);background:var(--gold-soft);border:1px solid #cda05b55;border-radius:5px;padding:3px 7px;flex-shrink:0;min-width:34px;text-align:center;}
+.row .title{flex:1;font-size:0.96rem;}
+.row .meta{font-family:var(--font-mono);font-size:0.74rem;color:var(--muted);flex-shrink:0;}
+.empty{color:var(--muted);font-family:var(--font-mono);font-size:0.85rem;}
 </style>
 </head>
 <body>
 <div class="wrap">
-<a class="nav-back" href="index.html">&larr; Voltar</a>
+<a class="crumb" href="index.html">&larr; VOLTAR</a>
 <h1>Materiais de apoio</h1>
-<a class="item" href="2-%20Atualiza%C3%A7%C3%B5es%20Clubes%202023%20-%20v02.pdf"><span>2- Atualizações Clubes 2023 - v02</span><span class="tag">pdf</span></a><a class="item" href="An%C3%A1lise%20PL%20e%20PVPA%20EVEN.xlsx"><span>Análise PL e PVPA EVEN</span><span class="tag">planilha</span></a><a class="item" href="Carteira%20-%20M%C3%A9dia%2C%20Desvio%20e%20Intervalo%20de%20confian%C3%A7a.xlsx"><span>Carteira - Média, Desvio e Intervalo de confiança</span><span class="tag">planilha</span></a><a class="item" href="Correl%20e%20Covar.xlsx"><span>Correl e Covar</span><span class="tag">planilha</span></a><a class="item" href="Desvio-padr%C3%A3o%20e%20Vari%C3%A2ncia.xlsx"><span>Desvio-padrão e Variância</span><span class="tag">planilha</span></a><a class="item" href="Escalas.xlsx"><span>Escalas</span><span class="tag">planilha</span></a><a class="item" href="MBA_M%C3%B3dulo%202_Estat%C3%ADstica.pdf"><span>MBA_Módulo 2_Estatística</span><span class="tag">pdf</span></a><a class="item" href="mba_primo_exerciciospraticos_estatistica.xlsx"><span>mba_primo_exerciciospraticos_estatistica</span><span class="tag">planilha</span></a><a class="item" href="Mediana.xlsx"><span>Mediana</span><span class="tag">planilha</span></a><a class="item" href="Moda.xlsx"><span>Moda</span><span class="tag">planilha</span></a><a class="item" href="M%C3%A9dia%20Ponderada%20e%20Simples.xlsx"><span>Média Ponderada e Simples</span><span class="tag">planilha</span></a>
+
+<div class="rule"></div>
+<div class="list">
+<a class="row" href="2-%20Atualiza%C3%A7%C3%B5es%20Clubes%202023%20-%20v02.pdf"><span class="code">pdf</span><span class="title">2- Atualizações Clubes 2023 - v02</span><span class="meta">material</span></a><a class="row" href="An%C3%A1lise%20PL%20e%20PVPA%20EVEN.xlsx"><span class="code">xls</span><span class="title">Análise PL e PVPA EVEN</span><span class="meta">material</span></a><a class="row" href="Carteira%20-%20M%C3%A9dia%2C%20Desvio%20e%20Intervalo%20de%20confian%C3%A7a.xlsx"><span class="code">xls</span><span class="title">Carteira - Média, Desvio e Intervalo de confiança</span><span class="meta">material</span></a><a class="row" href="Correl%20e%20Covar.xlsx"><span class="code">xls</span><span class="title">Correl e Covar</span><span class="meta">material</span></a><a class="row" href="Desvio-padr%C3%A3o%20e%20Vari%C3%A2ncia.xlsx"><span class="code">xls</span><span class="title">Desvio-padrão e Variância</span><span class="meta">material</span></a><a class="row" href="Escalas.xlsx"><span class="code">xls</span><span class="title">Escalas</span><span class="meta">material</span></a><a class="row" href="MBA_M%C3%B3dulo%202_Estat%C3%ADstica.pdf"><span class="code">pdf</span><span class="title">MBA_Módulo 2_Estatística</span><span class="meta">material</span></a><a class="row" href="mba_primo_exerciciospraticos_estatistica.xlsx"><span class="code">xls</span><span class="title">mba_primo_exerciciospraticos_estatistica</span><span class="meta">material</span></a><a class="row" href="Mediana.xlsx"><span class="code">xls</span><span class="title">Mediana</span><span class="meta">material</span></a><a class="row" href="Moda.xlsx"><span class="code">xls</span><span class="title">Moda</span><span class="meta">material</span></a><a class="row" href="M%C3%A9dia%20Ponderada%20e%20Simples.xlsx"><span class="code">xls</span><span class="title">Média Ponderada e Simples</span><span class="meta">material</span></a>
+</div>
 </div>
 </body>
 </html>
