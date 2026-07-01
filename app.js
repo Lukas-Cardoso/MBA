@@ -136,8 +136,13 @@
       } else {
         pushCloudProgress();
       }
+      setTopbarVisible(true);
       buildApp();
-    }).catch(function (e) { console.warn("Falha ao carregar progresso da nuvem:", e); });
+    }).catch(function (e) {
+      console.warn("Falha ao carregar progresso da nuvem:", e);
+      setTopbarVisible(true);
+      buildApp();
+    });
   }
 
   function updateAuthUI(user) {
@@ -155,6 +160,41 @@
       openBtn.style.display = "flex";
       chip.style.display = "none";
     }
+  }
+
+  function setTopbarVisible(visible) {
+    var topbar = document.querySelector(".topbar");
+    if (topbar) topbar.style.display = visible ? "flex" : "none";
+  }
+
+  var GOOGLE_ICON_SVG = '<svg viewBox="0 0 18 18" width="16" height="16"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84c-.21 1.13-.85 2.09-1.81 2.73v2.27h2.92c1.71-1.57 2.69-3.88 2.69-6.64z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.81 5.96-2.18l-2.92-2.27c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.71H.96v2.33C2.44 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.97 10.7A5.4 5.4 0 0 1 3.68 9c0-.59.1-1.17.29-1.7V4.97H.96A8.99 8.99 0 0 0 0 9c0 1.45.35 2.83.96 4.03l3.01-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.46 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0 5.48 0 2.44 2.02.96 4.97l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>';
+
+  function signInGoogle(onError, onSuccess) {
+    if (!firebaseReady()) { onError && onError("Login ainda nao foi configurado neste site (veja firebase-config.js)."); return; }
+    fbAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .then(function () { onSuccess && onSuccess(); })
+      .catch(function (e) { onError && onError(authTranslateError(e)); });
+  }
+
+  function renderAuthGate() {
+    setTopbarVisible(false);
+    app.innerHTML = "";
+    var wrap = el("div", "auth-gate");
+    var card = el("div", "auth-gate-card");
+    card.appendChild(el("div", "auth-modal-logo", '<span class="logo-mark">MB</span>'));
+    card.appendChild(el("h1", "auth-gate-title", esc(root.title)));
+    card.appendChild(el("p", "auth-gate-sub", "Faca login com sua conta Google para acessar o curso e acompanhar seu progresso."));
+    var errBox = el("div", "auth-message");
+    errBox.style.display = "none";
+    card.appendChild(errBox);
+    var googleBtn = el("button", "btn-google btn-google-full", GOOGLE_ICON_SVG + " Continuar com Google");
+    googleBtn.onclick = function () {
+      errBox.style.display = "none";
+      signInGoogle(function (msg) { errBox.textContent = msg; errBox.style.display = "block"; });
+    };
+    card.appendChild(googleBtn);
+    wrap.appendChild(card);
+    app.appendChild(wrap);
   }
 
   // ---- login modal (Google) ----
@@ -211,24 +251,27 @@
     if (googleBtn) {
       googleBtn.onclick = function () {
         clearAuthMessages();
-        if (!firebaseReady()) { showAuthError("Login ainda nao foi configurado neste site (veja firebase-config.js)."); return; }
-        fbAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-          .then(function () { closeAuthModal(); })
-          .catch(function (e) { showAuthError(authTranslateError(e)); });
+        signInGoogle(showAuthError, closeAuthModal);
       };
     }
 
-    if (!firebaseReady()) return;
+    if (!firebaseReady()) { buildApp(); return; }
     try {
       firebase.initializeApp(window.FIREBASE_CONFIG);
       fbAuth = firebase.auth();
       fbDb = firebase.firestore();
-    } catch (e) { console.warn("Firebase indisponivel:", e); return; }
+    } catch (e) { console.warn("Firebase indisponivel:", e); buildApp(); return; }
 
+    app.innerHTML = '<div class="auth-loading">Carregando...</div>';
     fbAuth.onAuthStateChanged(function (user) {
       cloudUser = user;
       updateAuthUI(user);
-      if (user) loadCloudProgress(user.uid);
+      if (user) {
+        loadCloudProgress(user.uid);
+      } else {
+        disposePlayer();
+        renderAuthGate();
+      }
     });
   }
 
@@ -722,8 +765,7 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     setupSearch();
-    buildApp();
     initAuth();
   });
-  if (document.readyState !== "loading") { setupSearch(); buildApp(); initAuth(); }
+  if (document.readyState !== "loading") { setupSearch(); initAuth(); }
 })();
