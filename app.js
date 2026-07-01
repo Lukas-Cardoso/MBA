@@ -181,8 +181,7 @@
     app.innerHTML = "";
     var wrap = el("div", "auth-gate");
     var card = el("div", "auth-gate-card");
-    card.appendChild(el("div", "auth-modal-logo", '<span class="logo-mark">MB</span>'));
-    card.appendChild(el("h1", "auth-gate-title", esc(root.title)));
+    card.appendChild(el("div", "auth-modal-logo", '<img src="Imagens/logo-mba.png" alt="' + esc(root.title) + '" class="auth-logo-img auth-gate-logo-img">'));
     card.appendChild(el("p", "auth-gate-sub", "Faca login com sua conta Google para acessar o curso e acompanhar seu progresso."));
     var errBox = el("div", "auth-message");
     errBox.style.display = "none";

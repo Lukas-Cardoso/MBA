@@ -32,11 +32,8 @@ a{color:inherit;}
 
 /* top bar */
 .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:18px;padding:14px 26px;background:rgba(6,5,4,0.75);backdrop-filter:blur(14px) saturate(140%);border-bottom:1px solid var(--border-soft);}
-.topbar .brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:600;font-size:1.08rem;letter-spacing:0.01em;cursor:pointer;white-space:nowrap;}
-.logo-mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(145deg,var(--gold-bright),var(--gold) 60%,#8a3a10);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:0.82rem;color:#160c04;box-shadow:var(--shadow-gold);flex-shrink:0;}
-.topbar .brand-text{display:flex;flex-direction:column;line-height:1.15;}
-.topbar .brand-text small{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.08em;color:var(--muted);text-transform:uppercase;font-weight:500;}
-.topbar .brand span.dot{color:var(--gold);}
+.topbar .brand{display:flex;align-items:center;gap:10px;cursor:pointer;white-space:nowrap;}
+.brand-logo{height:34px;width:auto;display:block;}
 .topbar .search{flex:1;max-width:420px;margin-left:auto;position:relative;}
 .topbar .search input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:9px 14px 9px 34px;font-family:var(--font-body);font-size:0.88rem;outline:none;transition:border-color .15s,box-shadow .15s;}
 .topbar .search input:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft);}
@@ -59,7 +56,8 @@ a{color:inherit;}
 .auth-modal-close{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:1.1rem;line-height:1;cursor:pointer;transition:border-color .15s,color .15s;}
 .auth-modal-close:hover{border-color:var(--gold);color:var(--gold-bright);}
 .auth-modal-logo{margin-bottom:14px;}
-.auth-modal-logo .logo-mark{width:44px;height:44px;border-radius:12px;font-size:1rem;margin:0 auto;}
+.auth-logo-img{height:40px;width:auto;margin:0 auto;display:block;}
+.auth-gate-logo-img{height:56px;}
 .auth-modal-title{font-family:var(--font-display);font-size:1.4rem;font-weight:600;margin:0 0 6px;}
 .auth-modal-sub{font-family:var(--font-mono);font-size:0.78rem;color:var(--muted);margin:0 0 22px;line-height:1.5;}
 .btn-google-full{width:100%;justify-content:center;padding:11px 14px;font-size:0.86rem;}
@@ -228,9 +226,7 @@ a{color:inherit;}
 @media(max-width:600px){
   .topbar{padding:12px 14px;gap:10px;}
   .topbar .search{display:none;}
-  .topbar .brand-text small{display:none;}
-  .topbar .brand-title{font-size:0.92rem;white-space:nowrap;}
-  .topbar .brand-title .dot{display:none;}
+  .brand-logo{height:26px;}
   .page{padding:22px 16px 70px;}
   .hero{padding:26px 0 22px;}
   .hero h1{font-size:1.6rem;}
