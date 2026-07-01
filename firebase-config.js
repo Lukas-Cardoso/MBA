@@ -1,12 +1,11 @@
-// Preencha com as credenciais do SEU projeto Firebase (Configuracoes do projeto > Geral > Seus apps > SDK setup).
-// Esses valores nao sao segredos: eles identificam o projeto, nao dao acesso a nada por si só.
-// Enquanto apiKey continuar como "YOUR_API_KEY", o login (e-mail/senha) fica desativado e o site
-// funciona normalmente salvando o progresso apenas neste navegador (modo local).
+// Credenciais do projeto Firebase "mba-investimentos".
+// Esses valores nao sao segredos: eles identificam o projeto, nao dao acesso a nada por si só
+// (o acesso real e protegido pelas regras de seguranca do Firestore).
 window.FIREBASE_CONFIG = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyA2kg24PbAPLcC5CmXNzG0PR_1yXU-PbEQ",
+  authDomain: "mba-investimentos-c07bc.firebaseapp.com",
+  projectId: "mba-investimentos-c07bc",
+  storageBucket: "mba-investimentos-c07bc.firebasestorage.app",
+  messagingSenderId: "1060262777737",
+  appId: "1:1060262777737:web:5a0389336e9ed2c3f1c758"
 };
