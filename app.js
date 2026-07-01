@@ -10,6 +10,18 @@
     "linear-gradient(135deg,#2a1c18,#4a2e22)"
   ];
 
+  var MODULE_ICONS = [
+    "👋", "🏛️", "📊", "🏦", "🧺",
+    "🏢", "👴", "📈", "📒", "🔍",
+    "♟️", "📉", "🧠", "🌍", "✈️",
+    "🪙", "⚖️", "🌾", "🧭", "💱",
+    "🎓", "🚀", "📱"
+  ];
+
+  var LAST_AULA_KEY = "mba-last-aula-v1";
+  function setLastAula(id) { try { localStorage.setItem(LAST_AULA_KEY, id); } catch (e) {} }
+  function getLastAula() { try { return localStorage.getItem(LAST_AULA_KEY); } catch (e) { return null; } }
+
   var byId = {};
   var parentOf = {};
   var root = COURSE_DATA;
@@ -74,7 +86,20 @@
 
   var app = document.getElementById("app");
 
+  function updateProgressPill() {
+    var pill = document.getElementById("progress-pill");
+    if (!pill) return;
+    var totalAulas = 0, totalDone = 0;
+    root.modules.forEach(function (m) {
+      var p = moduleProgress(m);
+      totalAulas += p.total; totalDone += p.done;
+    });
+    var pct = totalAulas ? Math.round((totalDone / totalAulas) * 100) : 0;
+    pill.textContent = totalDone + " / " + totalAulas + " · " + pct + "%";
+  }
+
   function render() {
+    updateProgressPill();
     var hash = location.hash.replace(/^#\/?/, "");
     window.scrollTo(0, 0);
     if (!hash) return renderHome();
@@ -126,13 +151,52 @@
     var pct = totalAulas ? Math.round((totalDone / totalAulas) * 100) : 0;
 
     var hero = el("div", "hero");
+    hero.appendChild(el("div", "kicker", "Plataforma de estudos"));
     hero.appendChild(el("h1", "", esc(root.title)));
-    hero.appendChild(el("p", "", totalAulas + " aulas &bull; " + root.modules.length + " modulos"));
+    hero.appendChild(el("p", "", "Trilha completa de investimentos, alocação de ativos e mercado de capitais"));
+
+    var stats = el("div", "hero-stats");
+    var s1 = el("div", "stat-card");
+    s1.appendChild(el("div", "stat-value", String(root.modules.length)));
+    s1.appendChild(el("div", "stat-label", "Modulos"));
+    var s2 = el("div", "stat-card");
+    s2.appendChild(el("div", "stat-value", String(totalAulas)));
+    s2.appendChild(el("div", "stat-label", "Aulas"));
+    var s3 = el("div", "stat-card");
+    s3.appendChild(el("div", "stat-value", String(totalDone)));
+    s3.appendChild(el("div", "stat-label", "Concluidas"));
+    var s4 = el("div", "stat-card");
+    s4.appendChild(el("div", "stat-value", pct + "%"));
+    s4.appendChild(el("div", "stat-label", "Progresso"));
+    stats.appendChild(s1); stats.appendChild(s2); stats.appendChild(s3); stats.appendChild(s4);
+    hero.appendChild(stats);
+
     var bar = el("div", "hero-progress");
     bar.appendChild(el("div", "hero-progress-bar")).style.width = pct + "%";
     hero.appendChild(bar);
     hero.appendChild(el("div", "hero-progress-label", totalDone + " / " + totalAulas + " aulas concluidas (" + pct + "%)"));
     page.appendChild(hero);
+
+    var lastId = getLastAula();
+    var lastAula = lastId ? byId[lastId] : null;
+    if (lastAula && lastAula.src) {
+      var parent = byId[parentOf[lastAula.id]];
+      var cc = el("a", "continue-card");
+      cc.href = "#/" + lastAula.id;
+      cc.appendChild(el("div", "cc-play", isDone(lastAula.id) ? "&#10003;" : "&#9654;"));
+      var body = el("div", "cc-body");
+      body.appendChild(el("div", "cc-label", "Continuar assistindo"));
+      body.appendChild(el("div", "cc-title", esc(lastAula.name)));
+      body.appendChild(el("div", "cc-sub", parent ? esc(parent.title || parent.name) : ""));
+      cc.appendChild(body);
+      cc.appendChild(el("div", "cc-arrow", "&rarr;"));
+      page.appendChild(cc);
+    }
+
+    var heading = el("div", "section-heading");
+    heading.appendChild(el("h2", "", "Modulos do curso"));
+    heading.appendChild(el("span", "", root.modules.length + " modulos"));
+    page.appendChild(heading);
 
     var grid = el("div", "grid");
     root.modules.forEach(function (m, i) {
@@ -149,6 +213,7 @@
     a.href = "#/" + node.id;
     var cover = el("div", "card-cover");
     cover.style.background = GRADIENTS[i % GRADIENTS.length];
+    cover.appendChild(el("span", "card-icon", MODULE_ICONS[i % MODULE_ICONS.length]));
     if (node.code) cover.appendChild(el("span", "card-code", node.code));
     a.appendChild(cover);
     var body = el("div", "card-body");
@@ -247,6 +312,7 @@
   function renderPlayer(aula) {
     if (currentPlayer) { try { currentPlayer.dispose(); } catch (e) {} currentPlayer = null; }
     app.innerHTML = "";
+    setLastAula(aula.id);
     var page = el("div", "page player-wrap");
     var parent = byId[parentOf[aula.id]];
     page.appendChild(renderCrumbs(aula));
@@ -257,6 +323,9 @@
       return;
     }
 
+    var layout = el("div", "player-layout");
+    var main = el("div", "player-main");
+
     var frame = el("div", "player-frame");
     var videoId = "vp_" + aula.id.replace(/[^a-z0-9]/gi, "_");
     frame.innerHTML =
@@ -265,10 +334,10 @@
       '<source src="' + esc(aula.src) + '" type="application/x-mpegURL">' +
       (aula.vtt ? '<track src="' + esc(aula.vtt) + '" kind="captions" srclang="pt" label="Portugues (BR)">' : '') +
       '</video>';
-    page.appendChild(frame);
+    main.appendChild(frame);
 
-    page.appendChild(el("div", "player-title", esc(aula.name)));
-    page.appendChild(el("div", "player-sub", (parent ? esc(parent.title || parent.name) : "")));
+    main.appendChild(el("div", "player-title", esc(aula.name)));
+    main.appendChild(el("div", "player-sub", (parent ? esc(parent.title || parent.name) : "")));
 
     var actions = el("div", "player-actions");
     var siblings = parent ? allAulas(parent).length ? (parent.children || []).filter(function (c) { return c.type === "aula"; }) : [] : [];
@@ -285,6 +354,7 @@
       toggleDone(aula.id);
       doneBtn.classList.toggle("done");
       doneBtn.innerHTML = isDone(aula.id) ? "&#10003; Concluida" : "Marcar como concluida";
+      updateProgressPill();
     };
     actions.appendChild(doneBtn);
 
@@ -292,15 +362,23 @@
     if (next) nextBtn.href = "#/" + next.id; else nextBtn.setAttribute("disabled", "true");
     actions.appendChild(nextBtn);
 
-    page.appendChild(actions);
+    main.appendChild(actions);
+    layout.appendChild(main);
 
     if (siblings.length > 1) {
-      page.appendChild(el("div", "section-title", "Nesta secao"));
+      var sidebar = el("div", "player-sidebar");
+      sidebar.appendChild(el("div", "section-title", "Nesta secao"));
       var list = el("div", "list");
-      siblings.forEach(function (s) { list.appendChild(aulaRow(s)); });
-      page.appendChild(list);
+      siblings.forEach(function (s) {
+        var row = aulaRow(s);
+        if (s.id === aula.id) row.classList.add("active");
+        list.appendChild(row);
+      });
+      sidebar.appendChild(list);
+      layout.appendChild(sidebar);
     }
 
+    page.appendChild(layout);
     app.appendChild(page);
 
     setTimeout(function () {
@@ -311,6 +389,7 @@
         }
         currentPlayer.on("ended", function () {
           setDone(aula.id, true);
+          updateProgressPill();
           if (next) location.hash = "#/" + next.id;
         });
       } catch (e) { /* video.js may not be loaded yet */ }
