@@ -11,7 +11,7 @@
 </head>
 <body>
 <div class="topbar">
-  <div class="brand" onclick="location.hash='#/'">
+  <div class="brand" onclick="window.scrollTo({top:0,behavior:'smooth'})">
     <span class="logo-mark">MB</span>
     <span class="brand-text">
       <span class="brand-title">MBA <span class="dot">&middot;</span> Investimentos</span>
@@ -23,6 +23,17 @@
     <div id="search-results" class="list" style="display:none;position:absolute;margin-top:6px;width:420px;max-height:340px;overflow:auto;background:#0d1422;border:1px solid #22304f;border-radius:10px;padding:8px;z-index:60;"></div>
   </div>
   <div class="progress-pill" id="progress-pill"></div>
+  <div class="auth-box" id="auth-box">
+    <button id="btn-open-auth" class="btn-google">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
+      Entrar
+    </button>
+    <div id="user-chip" class="user-chip" style="display:none;">
+      <img id="user-avatar" class="user-avatar" alt="">
+      <span id="user-name" class="user-name"></span>
+      <button id="btn-signout" class="user-signout" title="Sair">&#9211;</button>
+    </div>
+  </div>
 </div>
 
 <div id="app"></div>
@@ -31,9 +42,30 @@
   <p>MBA <span>&middot;</span> Investimentos &amp; Asset Allocation — plataforma de estudos</p>
 </footer>
 
+<div id="auth-modal" class="auth-modal" style="display:none;">
+  <div class="auth-modal-backdrop" id="auth-modal-backdrop"></div>
+  <div class="auth-modal-card">
+    <button type="button" class="auth-modal-close" id="auth-modal-close" aria-label="Fechar">&times;</button>
+    <div class="auth-modal-logo"><span class="logo-mark">MB</span></div>
+    <h2 class="auth-modal-title" id="auth-modal-title">Entrar</h2>
+    <p class="auth-modal-sub" id="auth-modal-sub">Acesse sua conta para salvar seu progresso na nuvem.</p>
+
+    <div id="auth-error" class="auth-message" style="display:none;"></div>
+
+    <button type="button" id="auth-google-btn" class="btn-google btn-google-full">
+      <svg viewBox="0 0 18 18" width="16" height="16"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84c-.21 1.13-.85 2.09-1.81 2.73v2.27h2.92c1.71-1.57 2.69-3.88 2.69-6.64z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.81 5.96-2.18l-2.92-2.27c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.71H.96v2.33C2.44 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.97 10.7A5.4 5.4 0 0 1 3.68 9c0-.59.1-1.17.29-1.7V4.97H.96A8.99 8.99 0 0 0 0 9c0 1.45.35 2.83.96 4.03l3.01-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.46 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0 5.48 0 2.44 2.02.96 4.97l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
+      Continuar com Google
+    </button>
+  </div>
+</div>
+
 <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-quality-levels/2.2.0/videojs-contrib-quality-levels.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
 <script src="data.js"></script>
 <script src="app.js"></script>
 </body>
